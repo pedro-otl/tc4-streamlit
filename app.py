@@ -60,6 +60,19 @@ from imblearn.over_sampling import SMOTE
 import joblib
 from joblib import load
 
+from pathlib import Path
+import joblib
+import streamlit as st
+
+
+@st.cache_resource
+def load_model():
+    model_path = Path(__file__).parent / "Modelo" / "rf.joblib"
+    return joblib.load(model_path)
+
+
+model = load_model()
+
 st.write('# Estimador de Obesidade')
 
 dados = pd.read_csv(
@@ -185,7 +198,6 @@ CLASSES = [
 ]
 
 if st.button("Enviar"):
-    model = joblib.load("modelo/rf.joblib")
 
     # predição (pega o valor único previsto para o novo cliente)
     final_pred = model.predict(cliente_pred)[-1]
